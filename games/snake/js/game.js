@@ -1,4 +1,3 @@
-// Create the canvas
 var canvas = document.createElement("canvas");
 var ctx = canvas.getContext("2d");
 
@@ -6,23 +5,23 @@ canvas.width = 512;
 canvas.height = 480;
 document.body.appendChild(canvas);
 
-// Background image
 var bgReady = false;
+var gameReady = false;
 var bgImage = new Image();
 bgImage.onload = function () {
 	bgReady = true;
 };
 bgImage.src = "images/background.png";
 
-// Hero image
-var heroReady = false;
-var heroImage = new Image();
-heroImage.onload = function () {
-	heroReady = true;
+var snakeReady = false;
+var snakeImage = new Image();
+//var s = new snek();
+snakeImage.onload = function () {
+	snakeReady = true;
+	
 };
-heroImage.src = "images/hero.png";
+snakeImage.src = "images/snake.png";
 
-// Monster image
 var monsterReady = false;
 var monsterImage = new Image();
 monsterImage.onload = function () {
@@ -31,15 +30,28 @@ monsterImage.onload = function () {
 monsterImage.src = "images/monster.png";
 
 var siz = 32;
+var meX = 16;
+var meY = 15;
 
-// Game objects
-var hero = {
-	speed: 32 // movement in pixels per second
+class snek{
+	
+	
+	constructor() {
+        this.head = null;
+        this.length = 0;
+		this.speed = 32;
+    }
+	
+
+	
+}
+
+var snake = {
+	speed: 32
 };
 var monster = {};
 var monstersCaught = 0;
 
-// Handle keyboard controls
 var keysDown = {};
 
 addEventListener("keydown", function (e) {
@@ -50,96 +62,110 @@ addEventListener("keyup", function (e) {
 	delete keysDown[e.keyCode];
 }, false);
 
-// Reset the game when the player catches a monster
-var reset = function () {
-	hero.x = siz*5;// canvas.width / 2;
-	hero.y = siz*5;//canvas.height / 2;
 
-	// Throw the monster somewhere on the screen randomly
+var reset = function () {
+	snake.x = siz*5;// canvas.width / 2;
+	snake.y = siz*5;//canvas.height / 2;
+
+
 	monster.x = siz + parseInt(Math.random() * 14) * siz;
 	monster.y = siz + parseInt(Math.random() * 13) * siz;
 };
 
-// Update game objects
+var dir = 0;
+var wDir = 0;
+var keyInput = function(){
+	if ((37 in keysDown || 65 in keysDown) && dir != 2) { 
+		wDir = 1;
+	}
+	if ((39 in keysDown || 68 in keysDown) && dir != 1) { 
+		wDir = 2;
+	}	
+	if ((38 in keysDown || 87 in keysDown) && dir != 4) {
+		wDir = 3;
+	}
+	if ((40 in keysDown || 83 in keysDown) && dir != 3) { 
+		wDir = 4;
+	}
+}
+
+
 var update = function (modifier) {
-	if (38 in keysDown) { // Player holding up
-		hero.y -= hero.speed * modifier;
-	}
-	if (40 in keysDown) { // Player holding down
-		hero.y += hero.speed * modifier;
-	}
-	if (37 in keysDown) { // Player holding left
-		hero.x -= hero.speed * modifier;
-	}
-	if (39 in keysDown) { // Player holding right
-		hero.x += hero.speed * modifier;
+	dir = wDir;
+	switch(dir){
+		case 1:
+			if (snake.x > siz) snake.x -= snake.speed * modifier;
+			break;
+		case 2:
+			if (snake.x < meX*siz - siz*2) snake.x += snake.speed * modifier;
+			break;
+		case 3:
+			if (snake.y > siz) snake.y -= snake.speed * modifier;
+			break;
+		case 4:
+			if (snake.y < meY*siz - siz*2) snake.y += snake.speed * modifier;
+			break;
+		default:
+		
 	}
 
-	// Are they touching?
 	if (
-		hero.x <= (monster.x + 32)
-		&& monster.x <= (hero.x + 32)
-		&& hero.y <= (monster.y + 32)
-		&& monster.y <= (hero.y + 32)
+		snake.x <= (monster.x + 32)
+		&& monster.x <= (snake.x + 32)
+		&& snake.y <= (monster.y + 32)
+		&& monster.y <= (snake.y + 32)
 	) {
 		++monstersCaught;
 		reset();
 	}
 };
 
-// Draw everything
+
 var render = function () {
-	if (bgReady) {
-		ctx.drawImage(bgImage, 0, 0);
-	}
+	if (bgReady) ctx.drawImage(bgImage, 0, 0);
+	if (snakeReady) ctx.drawImage(snakeImage, snake.x, snake.y);
+	if (monsterReady)ctx.drawImage(monsterImage, monster.x, monster.y);
 
-	if (heroReady) {
-		ctx.drawImage(heroImage, hero.x, hero.y);
-	}
-
-	if (monsterReady) {
-		ctx.drawImage(monsterImage, monster.x, monster.y);
-	}
-
-	// Score
 	ctx.fillStyle = "rgb(250, 250, 250)";
 	ctx.font = "24px Helvetica";
 	ctx.textAlign = "left";
 	ctx.textBaseline = "top";
-	ctx.fillText("Goblins caught: " + monstersCaught, 32, 32);
+	ctx.fillText("Goblins caught: " + monstersCaught, 32, 0);
+	
+	ctx.fillStyle = "rgb(250, 250, 250)";
+	ctx.font = "24px Helvetica";
+	ctx.textAlign = "left";
+	ctx.textBaseline = "top";
+	ctx.fillText(snake.x + " " + snake.y, 32, siz*14);
 };
 
-function sleep (time) {
-  return new Promise((resolve) => setTimeout(resolve, time));
-}
+var dMsg = "";
 
 
-
-// The main game loop
+var interval = 250;
 var main = function () {
 	var now = Date.now();
 	var delta = now - then;
 
+	if (gameReady) keyInput();
 	
-	sleep(100).then(() => {
-		update(1);
-
-
-	
-	render();
-
-	then = now;
-
-	// Request to do this again ASAP
+	if (!gameReady){
+		render();
+		if (delta >= interval) gameReady = true;
+	}else if (delta >= interval){
+		update(1 + parseInt(((delta - interval) / interval)));
+		render();
+		then = now;
+	}
 	requestAnimationFrame(main);
-		});
+	
 };
 
-// Cross-browser support for requestAnimationFrame
+
+
 var w = window;
 requestAnimationFrame = w.requestAnimationFrame || w.webkitRequestAnimationFrame || w.msRequestAnimationFrame || w.mozRequestAnimationFrame;
 
-// Let's play this game!
 var then = Date.now();
 reset();
 main();
