@@ -42,7 +42,15 @@
 	/*  2. EVENT TIME COUNTER
 	/* ----------------------------------------------------------- */
 	
-	$('#mu-event-counter').countdown('2019/06/02 06:00 AM').on('update.countdown', function(event) {
+	$('#mu-event-counter').countdown('2019/05/01 01:40 PM').on('update.countdown', function(event) {
+	  var $this = $(this).html(event.strftime(''
+	    + '<span class="mu-event-counter-block"><span>%D</span> Days</span> '
+	    + '<span class="mu-event-counter-block"><span>%H</span> Hours</span> '
+	    + '<span class="mu-event-counter-block"><span>%M</span> Mins</span> '
+	    + '<span class="mu-event-counter-block"><span>%S</span> Secs</span>'));
+	});
+	
+	$('#mu-event-counter2').countdown('2019/06/02 12:45 AM').on('update.countdown', function(event) {
 	  var $this = $(this).html(event.strftime(''
 	    + '<span class="mu-event-counter-block"><span>%D</span> Days</span> '
 	    + '<span class="mu-event-counter-block"><span>%H</span> Hours</span> '
