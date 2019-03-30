@@ -58,6 +58,13 @@
 	    + '<span class="mu-event-counter-block"><span>%S</span> Secs</span>'));
 	});
 
+	$('#mu-event-counter3').countdown('2019/08/12 02:00 PM').on('update.countdown', function(event) {
+	  var $this = $(this).html(event.strftime(''
+	    + '<span class="mu-event-counter-block"><span>%D</span> Days</span> '
+	    + '<span class="mu-event-counter-block"><span>%H</span> Hours</span> '
+	    + '<span class="mu-event-counter-block"><span>%M</span> Mins</span> '
+	    + '<span class="mu-event-counter-block"><span>%S</span> Secs</span>'));
+	});
 	
     /* ----------------------------------------------------------- */
 	/*  3. MENU SMOOTH SCROLLING
