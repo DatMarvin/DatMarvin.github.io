@@ -58,7 +58,15 @@
 	    + '<span class="mu-event-counter-block"><span>%S</span> Secs</span>'));
 	});
 
-	$('#mu-event-counter3').countdown('2019/08/12 02:00 PM').on('update.countdown', function(event) {
+	$('#mu-event-counter3').countdown('2019/06/28 10:00 AM').on('update.countdown', function(event) {
+	  var $this = $(this).html(event.strftime(''
+	    + '<span class="mu-event-counter-block"><span>%D</span> Days</span> '
+	    + '<span class="mu-event-counter-block"><span>%H</span> Hours</span> '
+	    + '<span class="mu-event-counter-block"><span>%M</span> Mins</span> '
+	    + '<span class="mu-event-counter-block"><span>%S</span> Secs</span>'));
+	});
+	
+	$('#mu-event-counter4').countdown('2019/08/09 02:00 PM').on('update.countdown', function(event) {
 	  var $this = $(this).html(event.strftime(''
 	    + '<span class="mu-event-counter-block"><span>%D</span> Days</span> '
 	    + '<span class="mu-event-counter-block"><span>%H</span> Hours</span> '
