@@ -1,4 +1,4 @@
-cd C:\WebShare\git\DatMarvin.github.io
+cd C:\WebShare\DatMarvin.github.io
 set /p var= <commmsg.txt
 git add .
 git commit -m '%var%'
