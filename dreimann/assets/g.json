@@ -1,0 +1,31 @@
+  {
+    "id": 0,
+    "name": "DREIMANN",
+    "players": [
+      {
+        "id": 0,
+        "name": "a"
+      },
+      {
+        "id": 1,
+        "name": "b"
+      },
+      {
+        "id": 2,
+        "name": "qwer"
+      },
+      {
+        "id": 2,
+        "name": ""
+      },
+      {
+        "id": 2,
+        "name": "ghs"
+      },
+      {
+        "id": 2,
+        "name": "ndthzjm"
+      }
+    ],
+    "turn": "b"
+  }
