@@ -144,6 +144,7 @@ var HttpClient = function() {
 }
 
 var click = function () {
+	console.log("click")
 	var client = new HttpClient();
 	client.get('https://google.com', function(response) {
 		console.log(response)
